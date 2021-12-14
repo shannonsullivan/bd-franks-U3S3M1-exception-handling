@@ -40,22 +40,26 @@ public class ApplicationProgram {
             System.out.println("\nEnter the number of the Bowler you would like displayed");
             System.out.printf("Valid numbers are 1 thru %d\nYour choice: ", theBowlers.size());
             response = theKeyBoard.nextLine();
-            if (response.toLowerCase().charAt(0) == 'e') { // any word starting with e will end the program
+            if (response.toLowerCase().charAt(0) == 'e') { // any word starting with 'e' will end the program
                 shouldLoop = false;
                 continue;
             }
-
-            int bowlerNumber = 0;
-            // throw custom exception if the user enters non-numeric number
-            try {
-                bowlerNumber = Integer.parseInt(response); // throw NumberFormatException if not numeric
-            } catch (NumberFormatException exceptionObject) {
-                // throw custom exception here
-                throw new NonNumericInputException("Input value " + response + " was non-numeric");
-
+            int bowlerNumber = 0;  // define outside block since it's needed in code outside teh try block
+            // throw a custom exception if the user enters non-numeric bowler number
+            try {   // In case NonNumericException is thrown
+                try { // in case NumberFormatException is thrown
+                    bowlerNumber = Integer.parseInt(response);  // throw NumberFormatException if not numeric
+                } // End of try
+                catch (NumberFormatException exceptionObj) {
+                    throw new NonNumericInputException("input value '" + response + "' was non-numeric");
+                }
+            } // end on try
+            catch (NonNumericInputException anExceptionObject) {
+                System.out.println("Please enter a numeric value in the range indicated");
+                continue;
             }
             ShowBowler(theBowlers.get(bowlerNumber - 1));
-        }
+        } // end of while()
 
         System.out.println("-".repeat(80));
 
